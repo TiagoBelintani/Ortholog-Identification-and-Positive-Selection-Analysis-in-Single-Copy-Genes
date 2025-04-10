@@ -1,0 +1,79 @@
+🧬 Ortholog Identification and Positive Selection Analysis in Single-Copy Genes.
+
+This repository documents the bioinformatics workflow developed to identify orthologous genes and estimate nonsynonymous (Ka) and synonymous (Ks) substitution rates based on 1,020 single-copy genes (SCGs) derived from transcriptomes of 18 samples representing three species of the genus Mepraia (6 samples per species).
+
+The primary goal of this analysis is to detect genes potentially evolving under positive selection between lineages, combining orthology inference, codon-based alignment, substitution rate estimation, and functional annotation.
+
+🧪 Samples analyzed
+Mepraia spinolai (6 samples)
+
+Mepraia gajardoi (6 samples)
+
+Mepraia parapatrica (6 samples)
+
+Transcriptomes were assembled using Trinity and annotated with TransDecoder, followed by selection of single-copy orthologous genes.
+
+🧭 Workflow summary
+
+Standardized renaming of transcript headers
+Custom scripts were used to rename FASTA headers in the format SampleID@N (e.g., ms1@1, mp15@7) to ensure consistent traceability across the dataset.
+
+Open Reading Frame (ORF) prediction with GetORF (EMBOSS)
+ORFs with a minimum length of 150 amino acids were retained.
+
+Translation of ORFs to peptides using Transeq (EMBOSS)
+
+Ortholog inference using OrthoFinder + DIAMOND
+Translated protein sets from all 18 samples were analyzed with OrthoFinder, employing multiple sequence alignment (MAFFT) and orthogroup inference via MCL clustering.
+
+Filtering for pairwise single-copy orthologs
+Only one-to-one orthologous genes between species pairs were retained for downstream analysis.
+
+Codon-aware alignments with ParaAT v1.0
+Codon alignments were generated from protein alignments and corresponding CDS using ParaAT.
+
+Ka, Ks, and Ka/Ks estimation using KaKs_Calculator v2.0
+Substitution rates were calculated using the YN (Yang & Nielsen) model. Orthologs were excluded if:
+
+Alignment length was < 150 bp
+
+Ks > 0.1 (to avoid possible paralogs)
+
+Ka or Ks values were unavailable
+
+Detection of positive selection
+Orthologs with Ka/Ks > 1 were considered as candidates under positive selection.
+
+Functional annotation and GO enrichment (optional)
+Candidate genes can be annotated using public databases, and GO enrichment analyses can be performed using ClusterProfiler (R/Bioconductor).
+
+📦 Conda environment
+A Conda environment is provided to ensure reproducibility. The pipeline depends on the following tools:
+
+EMBOSS (getorf, transeq)
+OrthoFinder
+DIAMOND
+MAFFT
+ParaAT (via GitHub)
+KaKs_Calculator (via SourceForge)
+
+📁 Repository structure
+bash
+Copy
+Edit
+.
+├── data/                 # Renamed FASTA files
+├── orfs/                 # Extracted and translated ORFs
+├── orthofinder_out/      # OrthoFinder output
+├── alignments/           # Codon-based alignments from ParaAT
+├── kaks_results/         # Ka, Ks, and Ka/Ks results
+├── scripts/              # Custom bash and perl scripts
+└── environment.yml       # Conda environment file
+
+📜 Key references
+Emms & Kelly, 2019 – OrthoFinder
+Rice et al., 2000 – EMBOSS
+Zhang et al., 2012 – ParaAT
+Zhang et al., 2006 – KaKs_Calculator
+
+Yu et al., 2012 – ClusterProfiler
