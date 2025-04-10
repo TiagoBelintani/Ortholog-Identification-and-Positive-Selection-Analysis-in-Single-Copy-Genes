@@ -1,0 +1,10 @@
+name: orthokaks
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.9
+  - emboss
+  - orthofinder
+  - diamond
+  - mafft
