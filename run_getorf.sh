@@ -21,3 +21,9 @@ for fasta in "$input_dir"/*.fa; do
 
     echo "ORFs extracted for $sample_name"
 done
+
+#The getorf program must be available in the environment (installed via conda install -c bioconda emboss)
+
+#The ./input directory must contain the renamed FASTA
+
+#Output will be saved in ./orfs/ with names like ID_orfs.fasta
